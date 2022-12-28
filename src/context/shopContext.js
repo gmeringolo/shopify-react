@@ -1,4 +1,4 @@
-import React, { Children, Component } from "react";
+import React, { Component } from "react";
 import Client from "shopify-buy";
 
 const ShopContext = React.createContext();
@@ -31,12 +31,10 @@ class ShopProvider extends Component {
     this.setState({ checkout: checkout });
   };
 
-  fetchCheckout = async (checkoutId) => {
-    client.checkout
-    .fetch(checkoutId)
-    .then((checkout)=>{
-        this.setState({checkout: checkout})
-    })
+  fetchCheckout = (checkoutId) => {
+    client.checkout.fetch(checkoutId).then((checkout) => {
+      this.setState({ checkout: checkout });
+    });
   };
 
   addItemtoCheckout = async () => {};
@@ -45,25 +43,41 @@ class ShopProvider extends Component {
 
   fetchAllProducts = async () => {
     const products = await client.product.fetchAll();
-    this.serState({ product: products });
+    this.setState({ product: products });
   };
 
   fetchProductWithHandle = async (handle) => {
     const product = await client.product.fetchByHandle(handle);
-    this.serState({ product: product });
+    this.setState({ product: product });
   };
 
-  closeCart = () => {};
+  closeCart = () => { this.setState({isCartOpen: false})};
 
-  openCart = () => {};
+  openCart = () => {this.setState({isCartOpen: true})};
 
   closeMenu = () => {};
 
   openMenu = () => {};
 
   render() {
-    console.log(this.state.checkout);
-    return <ShopContext.Provider>{this.props.children}</ShopContext.Provider>;
+    //console.log(this.state.checkout);
+    return (
+      <ShopContext.Provider
+        value={{
+          ...this.state,
+          fetchAllProducts: this.fetchAllProducts,
+          fetchProductWithHandle: this.fetchProductWithHandle,
+          closeCart: this.closeCart,
+          openCart: this.openCart,
+          closeMenu: this.closeMenu,
+          openMenu: this.openMenu,
+          addItemToCheckout: this.addItemToCheckout,
+          removeLineItem: this.removeLineItem,
+        }}
+      >
+        {this.props.children}
+      </ShopContext.Provider>
+    );
   }
 }
 
