@@ -9,6 +9,7 @@ https://shopify.github.io/js-buy-sdk/
 
 chakra-ui.com
 `npm i @chakra-ui/react @emotion/react @emotion/styled framer-motion`
+`npm i @chakra-ui/icons`
 
 https://react-icons.github.io/react-icons/icons?name=md
 
