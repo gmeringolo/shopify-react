@@ -37,9 +37,24 @@ class ShopProvider extends Component {
     });
   };
 
-  addItemtoCheckout = async () => {};
+  addItemtoCheckout = async (variantId, quantity) => {
+    const LineItemToAdd = [
+      {
+        variantId,
+        quantity: parseInt(quantity, 10),
+      },
+    ];
+    const checkout = await client.checkout.addLineItems(
+      this.setState.checkout.is, LineItemToAdd)
+      this.setState({checkout: checkout})
 
-  removeLineItem = async (LineItemIdsToRemove) => {};
+      this.openCart();
+  };
+
+  removeLineItem = async (lineItemIdsToRemove) => {
+    const checkout= await client.checkout.removeLineItems(this.state.checkout.id, lineItemIdsToRemove)
+    this.setState({checkout: checkout})
+  };
 
   fetchAllProducts = async () => {
     const products = await client.product.fetchAll();
@@ -51,9 +66,13 @@ class ShopProvider extends Component {
     this.setState({ product: product });
   };
 
-  closeCart = () => { this.setState({isCartOpen: false})};
+  closeCart = () => {
+    this.setState({ isCartOpen: false });
+  };
 
-  openCart = () => {this.setState({isCartOpen: true})};
+  openCart = () => {
+    this.setState({ isCartOpen: true });
+  };
 
   closeMenu = () => {};
 
