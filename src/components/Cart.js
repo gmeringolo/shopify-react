@@ -15,13 +15,14 @@ import {
   Flex,
   Image,
   Link,
+  Box,
 } from "@chakra-ui/react";
 
 const Cart = () => {
   const { isCartOpen, closeCart, checkout, removeLineItem } =
     useContext(ShopContext);
 
-    console.log(checkout)
+  console.log(checkout);
 
   return (
     <>
@@ -32,11 +33,14 @@ const Cart = () => {
           <DrawerHeader>Your Shopping Cart</DrawerHeader>
 
           <DrawerBody>
-            {checkout.lineItems &&
+            {checkout.lineItems?.lenght ? (
               checkout.lineItems.map((item) => (
                 <Grid templateColumns="repeat(4, 1fr)" gap={1} key={item.id}>
                   <Flex alignItems="center" justifyContent="center">
-                    <CloseIcon cursor="pointer" onClick={() => removeLineItem(item.id)}/>
+                    <CloseIcon
+                      cursor="pointer"
+                      onClick={() => removeLineItem(item.id)}
+                    />
                   </Flex>
                   <Flex alignItems="center" justifyContent="center">
                     <Image src={item.variant.image.src} />
@@ -48,13 +52,29 @@ const Cart = () => {
                     <Text>{item.variant.price}</Text>
                   </Flex>
                 </Grid>
-              ))}
+              ))
+            ) : (
+              <Box h="100%" w="100%">
+                <Text
+                  h="100%"
+                  display="flex"
+                  flexDir="column"
+                  alignItems="center"
+                  justifyContent="center"
+                >
+                  Your Cart is empty!
+                </Text>
+              </Box>
+            )}
           </DrawerBody>
 
-          <DrawerFooter>
-            <Button w="100%"><Link
-             href={checkout.webUrl}>Checkout</Link></Button>
-          </DrawerFooter>
+          {checkout.lineItem?.lenght ? (
+            <DrawerFooter>
+              <Button w="100%">
+                <Link href={checkout.webUrl}>Checkout</Link>
+              </Button>
+            </DrawerFooter>
+          ) : null}
         </DrawerContent>
       </Drawer>
     </>

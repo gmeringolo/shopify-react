@@ -6,6 +6,7 @@ const ShopContext = React.createContext();
 const client = Client.buildClient({
   domain: process.env.REACT_APP_SHOPIFY_DOMAIN,
   storefrontAccessToken: process.env.REACT_APP_SHOPIFY_API,
+  password: process.env.REACT_APP_SHOPIFY_PASS
 });
 
 class ShopProvider extends Component {
@@ -74,9 +75,13 @@ class ShopProvider extends Component {
     this.setState({ isCartOpen: true });
   };
 
-  closeMenu = () => {};
+  closeMenu = () => {
+    this.setState({ isMenuOpen: false });
+  };
 
-  openMenu = () => {};
+  openMenu = () => {
+    this.setState({ isMenuOpen: true });
+  };
 
   render() {
     //console.log(this.state.checkout);
